@@ -1,22 +1,22 @@
 :- use_module(library(random)).
 
 jia_fa :-
-    xuan_yi_ge(0, 5, Op1),
-    xuan_yi_ge(0, 9, Op2),
-    suan(Op1, Op2, +, 0, 3),
-    jia_fa.
+    math(+).
+
+jia_fa(Count) :-
+    generate(0, Count, +).
 
 jian_fa :-
-    xuan_yi_ge(0, 5, Op1),
-    xuan_yi_ge(0, 9, Op2),
-    suan(Op1, Op2, -, 0, 3),
-    jian_fa.
+    math(-).
+
+jian_fa(Count) :-
+    generate(0, Count, -).
 
 cheng_fa :-
-    xuan_yi_ge(0, 5, Op1),
-    xuan_yi_ge(0, 9, Op2),
-    suan(Op1, Op2, *, 0, 3),
-    cheng_fa.
+    math(*).
+
+cheng_fa(Count) :-
+    generate(0, Count, *).
 
 chu_fa :-
     xuan_yi_ge(0, 9, Op1),
@@ -24,6 +24,19 @@ chu_fa :-
     suan(Op1, Op2, /, 0, 3),
     chu_fa.
 
+math(Operator) :-
+    xuan_yi_ge(0, 9, Op1),
+    xuan_yi_ge(0, 9, Op2),
+    suan(Op1, Op2, +, 0, 3),
+    math(Operator).
+
+generate(X, X, _) :- !.
+generate(X, Count, Operator) :-
+    xuan_yi_ge(0, 9, Op1),
+    xuan_yi_ge(0, 9, Op2),
+    format('ella? ~w ~w ~w = ~n', [Op1,Operator,Op2]),
+    Y is X + 1,
+    generate(Y, Count, Operator).
 
 suan(Op1, Op2, Operator, X, X) :- !,
     suan0(Operator, Op1, Op2, Result),
